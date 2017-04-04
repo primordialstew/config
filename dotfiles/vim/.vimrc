@@ -1,39 +1,28 @@
-" .vimrc - A Vim configuration file
-" Maintainer:   Brian Stewart <https://github.com/primordialstew>
-" Version:      0.1
-
-" ====================
-" Vundle configuration
-" ====================
-
-" To manage plugins, I use the Vundle plugin. It requires the following
-" configuration settings.
-
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+ set rtp+=~/.vim/bundle/Vundle.vim
+ call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
-
+"
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'                  " Manage vim plugins
+Plugin 'scrooloose/nerdtree'                " File tree explorer
+Plugin 'scrooloose/nerdcommenter'           " Toggle code comments
 Plugin 'altercation/vim-colors-solarized'   " Eye-friendly colors
-Plugin 'scrooloose/nerdtree'                " Fancy file tree explorer
-Plugin 'hynek/vim-python-pep8-indent'       " PEP8-compliant autoindent
-Plugin 'scrooloose/syntastic'               " Syntax checking
-Plugin 'tpope/vim-repeat'                   " Make . work with plugin maps
-Plugin 'tpope/vim-surround'                 " Easily edit parens, XML tags, etc
-Plugin 'tpope/vim-fugitive'                 " Use git from within Vim 
-Plugin 'tpope/vim-jdaddy'                   " JSON manipulation
-Plugin 'tpope/vim-sensible'                 " Nice Vim settings (applied after
-                                            " .vimrc by default)
+Plugin 'tpope/vim-fugitive'                 " Git functionality
+Plugin 'hynek/vim-python-pep8-indent'       " Indent Python code
+Plugin 'elzr/vim-json'                      " JSON syntax & highlighting
+"Plugin 'git://git.wincent.com/command-t.git'
+"Plugin 'sjbach/lusty'
+"Plugin 'mileszs/ack.vim'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
+" Plugin 'tpope/vim-fugitive'
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " Git plugin not hosted on GitHub
@@ -45,13 +34,13 @@ Plugin 'tpope/vim-sensible'                 " Nice Vim settings (applied after
 " Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Avoid a name conflict with L9
 " Plugin 'user/L9', {'name': 'newL9'}
-
+"
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
-
+"
 " Brief help
 " :PluginList          - list configured plugins
 " :PluginInstall(!)    - install (update) plugins
@@ -59,138 +48,80 @@ filetype plugin indent on    " required
 " :PluginClean(!)      - confirm (or auto-approve) removal of unused plugins
 "
 " see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
 
+" Current plugins:
+" python3.0.vim   -- enables better Python highlighting
+" minibufexpl.vim -- buffer explorer.
+"
+" See remappings at end of file
 
-" =============================
-" Plugin-specific configuration
-" =============================
+" Lusty requires a ruby plugin, generates a warning if it is missing. This
+" suppresses that warning because it is obnoxious:
+let g:LustyJugglerSuppressRubyWarning = 1
 
-" --------
-" NERDTree
-" --------
-let NERDTreeIgnore=['\.pyc$']   " don't show these files in NERDTree
-" toggle NERDTree explorer
-nnoremap <silent> <c-6> :NERDTreeToggle<CR>
+" Set color scheme
+syntax enable
+set background=light
+colorscheme solarized
 
-" ---------
-" Syntastic
-" ---------
-" recommended beginner settings for Syntastic,
-" from https://github.com/scrooloose/syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-
-" ============
-" Vim settings
-" ============
-
-" -------------
-" Compatibility
-" -------------
-set encoding=utf-8  " set default encoding to UTF8
-set fileformat=unix " use \n line endings
-
-" ------------------
-" Indents & wrapping
-" ------------------
-set textwidth=79    " lines longer than 79 columns will be broken
-"set textwidth=0     "Disable text wrapping
-set expandtab       " insert spaces when hitting TABs
-set autoindent      " align the new line indent with the previous line
-"set smartindent     "Try to guess when indenting is needed
-set tabstop=4       " a hard TAB displays as 4 columns
-set softtabstop=4   " insert/delete 4 spaces when hitting a TAB/BACKSPACE
-set shiftwidth=4    " operation >> indents 4 columns; << unindents 4 columns
-set shiftround      " round indent to multiple of 'shiftwidth'
-
-" ------------
-" Code hygeine
-" ------------
-set number          " show line numbers
-set colorcolumn=80  " highlight 80th column (vim 7.3+ only)
-set showmatch       " briefly jump to matching parenthesis
-syntax enable       " turn on syntax highlighting
-" highlight floating whitespace in red
-highlight BadWhitespace ctermbg=red guibg=red
-match BadWhitespace /^\t\+/ " beginning tabs
-match BadWhitespace /\s\+$/ " trailing whitespace
-
-" ----------
-" Aesthetics
-" ----------
-" set colorscheme. See $VIMRUNTIME/colors for the standard list.
-"set guifont=Monospace\ 18
-"set background=light
-set background=dark
-"colorscheme solarized
-colorscheme desert
-
-
-" ------------
-" Command mode
-" ------------
-set history=300     " set a history of 300 commands
-
-" -----
-" Mouse
-" -----
+" General
+set tabstop=8       "Value of pre-existing tabs
+set softtabstop=4   "Set to match shiftwidth to always use spaces
+set shiftwidth=4    "Value of new indent
+set expandtab       "Replace tabs with shiftwidth spaces
+"set textwidth=79   "Wrap after 79 characters
+set textwidth=0     "Disable text wrapping
+" colorcolumn only available in v7.3+
+set colorcolumn=80  "Highlight 80th column
+set autoindent      "Keep indent from previous line
+set smartindent     "Try to guess when indenting is needed
+set encoding=utf-8  "Set default encoding to UTF8
+set number          "Show line numbers
+set history=300     "Set a history of 300 commands
+set fileformat=unix "Use \n line endings
+set encoding=utf-8  "Set default encoding to UTF-8
+set nocompatible    "Enable useful VIM features
+set showmatch       "Briefly jump to matching parenthesis
+set paste           "Fix issues with pasting from system clipboard
 set ttymouse=xterm2
+"set mouse=a         "Enable mouse in terminal Vim
+set backupdir=~/.vim/backup//   "Write backups to .vim dir (vs working dir)
+set directory=~/.vim/swap//     "Write swap files to .vim dir (vs working dir)
+set undodir=~/.vim/undo//       "Write undo files to .vim dir (vs working dir)
 
-" -------------------
-" Backup & swap files
-" -------------------
-" Files will be written to the first existing path in the list.
-" The trailing // tells Vim to use filenames representing the absolute path
-" of the edited file, to avoid name collisions.
-set backupdir=~/tmp/vim//,~/tmp//,.     " write backup files here
-set directory=~/tmp/vim//,~/tmp//,.     " write swapfiles here
+" Commands for JSON files
+"augroup json_autocmd 
+"  autocmd! 
+"  autocmd FileType json set autoindent 
+"  autocmd FileType json set formatoptions=tcq2l 
+"  autocmd FileType json set textwidth=78 shiftwidth=2 
+"  autocmd FileType json set softtabstop=2 tabstop=8 
+"  autocmd FileType json set expandtab 
+"  autocmd FileType json set foldmethod=syntax 
+"augroup END
 
-" ====================
-" Convenience mappings
-" ====================
+"Highlight floating whitespace in red
+highlight BadWhitespace ctermbg=red guibg=red
+match BadWhitespace /^\t\+/ "Beginning tabs
+match BadWhitespace /\s\+$/ "Trailing whitespace
 
-" -------------
-" Function Keys
-"nnoremap <F1> "toggle overlength highlighting
-nnoremap <F2> :set number!<CR>
-nnoremap <F3> :set invpaste paste?<CR>
-nnoremap <F4> :call FoldArgumentsOntoMultipleLines()<CR>
-nnoremap <F5> :call SyntasticToggleMode()<CR>
-nnoremap <silent> <F6> :NERDTreeToggle<CR>
-nnoremap <F7> :call ToggleBackground()<CR>
-"nnoremap <F8>
-"nnoremap <F9>
-"nnoremap <F10>
-nnoremap <F12> :call ToggleMouse()<CR>
+"Enable filetype checking and filetype-specific plugins and indentation
+"filetype plugin indent on
+filetype plugin on
 
-inoremap <F4> <Esc>:call FoldArgumentsOntoMultipleLines()<CR>a
+"Set colorscheme. See $VIMRUNTIME/colors for the standard list.
+set guifont=Monospace\ 18
+colorscheme desert
+"if has ("gui_running")
+"	colorscheme murphy
+"endif
 
-" ------
-" Splits
-" ------
-" easier split (pane) navigation 
-" use ctrl-[hjkl] to select the active split!
-nmap <silent> <c-k> :wincmd k<CR> 
-nmap <silent> <c-j> :wincmd j<CR> 
-nmap <silent> <c-h> :wincmd h<CR>
-nmap <silent> <c-l> :wincmd l<CR>
-"resize split windows
-nnoremap = :exe "resize +2"<cr>
-nnoremap - :exe "resize -2"<cr>
+"Plugin-specific settings
+"python3.0.vim -- turn on all extra highlighting
+let python_highlight_all=1
 
-" -------
-" Editing
-" -------
-" add a new line without insert mode
-nnoremap <enter> o<esc>k
-" toggle mouse
+"function to enable/disable mouse
 function! ToggleMouse()
   if &mouse == 'a'
     set mouse=
@@ -200,64 +131,60 @@ function! ToggleMouse()
     echo "Mouse usage enabled"
   endif
 endfunction
-" toggle paste/nopaste
-set pastetoggle=<F3>
-set showmode
-" The following maps F4 in normal and insert mode to doing a search and
-" replace on the current line which converts all commas (with 0 or more
-" spaces after each) into commas with a carriage return after each, then
-" selects the whole group and indents it using the Vim builtin =.
-" 
-" A known shortcoming of this solution is for lines that include multiple
-" template parameters (it breaks on their commas as well instead of just
-" the commas of the normal parameters).
-function FoldArgumentsOntoMultipleLines()
-    substitute@,\s*@,\r@ge
-    normal v``="
-endfunction
 
-" ---------
-" Searching
-" ---------
-vnoremap // y/<C-R>"<CR>
-
-" -----------
-" Visual cues
-" -----------
-" toggle long line hightlighting
-let g:overlength_enabled = 0
-"highlight OverLength ctermbg=black guibg=#212121
+" Long line highlighting
 highlight OverLength ctermbg=blue guibg=blue
 function! ToggleOverLengthHighlight()
-    if g:overlength_enabled == 0
-        match OverLength /\%79v.*/
-        let g:overlength_enabled = 1
-        echo 'OverLength highlighting turned on'
+    if !exists("b:olhl_on") || (b:olhl_on == 'n')
+        :match OverLength '\%80v.\+'
+        let b:olhl_on = 'y'
+        echo "Matching lines over 79 characters"
     else
-        match
-        let g:overlength_enabled = 0
-        echo 'OverLength highlighting turned off'
+        :match
+        let b:olhl_on = 'n'
+        echo "Disabling long line matching"
     endif
 endfunction
-nnoremap <leader>h :call ToggleOverLengthHighlight()<CR>
+
+"Toggle long line hightlighting with F1
 nnoremap <silent> <F1> :call ToggleOverLengthHighlight()<CR>
 nnoremap <silent> <c-1> :call ToggleOverLengthHighlight()<CR>
-" toggle line numbers
+"Toggle NERDTree with F6 in normal mode
+nnoremap <silent> <F6> :NERDTreeToggle<CR>
+nnoremap <silent> <c-6> :NERDTreeToggle<CR>
+"Toggle MiniBufExplorer with F7 in normal mode
+nnoremap <silent> <F7> :TMiniBufExplorer<CR>
+nnoremap <silent> <c-7> :TMiniBufExplorer<CR>
+"Toggle mouse with F12
+nnoremap <F12> :call ToggleMouse()<CR>
+
+nnoremap <F2> :set number!<CR>
 nnoremap <c-2> :set number!<CR>
 
-" ----------
-" Aesthetics
-" ----------
-function! ToggleBackground()
-  if &background == 'light'
-    set background=dark
-    echo "Background set to dark"
-  else
-    set background=light
-    echo "Background set to light"
-  endif
-endfunction
+"Split current screen
+nnoremap <F4> :split<CR>
 
-" -------------
-" Special Cases
-" -------------
+"Launch Explore with F3
+nnoremap <F3> :Explore<CR>
+
+"" Easier split (pane) navigation 
+"" Use ctrl-[hjkl] to select the active split!
+nmap <silent> <c-k> :wincmd k<CR> 
+nmap <silent> <c-j> :wincmd j<CR> 
+nmap <silent> <c-h> :wincmd h<CR>
+nmap <silent> <c-l> :wincmd l<CR>
+
+"resize split windows
+nnoremap = :exe "resize +2"<cr>
+nnoremap - :exe "resize -2"<cr>
+
+"add a new line without insert mode
+nnoremap <enter> o<esc>k
+
+noremap <expr> <silent> <home> col('.') == match(getline('.'),'\s')+1 ? '0' : '^'
+imap <silent> <home> <c-o><home>
+
+"don't show certain files (e.g. .pyc binaries) in NERDTree
+let NERDTreeIgnore=['\.pyc$']
+
+set hidden                  " requested by Lusty plugin

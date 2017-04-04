@@ -3,7 +3,7 @@
     bare = false
     repositoryformatversion = 0 
     filemode = false
-	excludesfile = ~/.gitignore_global
+	excludesfile = ~/.gitignore
     editor = vim
 [color "diff"]
     frag = magenta bold
@@ -37,6 +37,5 @@
     origin = remote show origin
     pom = push origin master:master
 [push]
+[push]
 	default = simple
-[merge]
-	tool = vimdiff
