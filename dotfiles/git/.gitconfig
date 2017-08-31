@@ -37,6 +37,6 @@
     origin = remote show origin
     pom = push origin master:master
 [push]
-	default = simple
+	default = current
 [merge]
 	tool = vimdiff
